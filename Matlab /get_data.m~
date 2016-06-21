@@ -1,0 +1,7 @@
+nodes = csvread('flickr-nodes.csv')
+edges = csvread('flickr-edges.csv')
+
+EdgeTable = table([edges(:,1), edges(:,2)])
+NodeTable = table([nodes])
+
+get_graph = graph(EdgeTable, NodeTable)
