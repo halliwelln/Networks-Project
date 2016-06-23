@@ -7,7 +7,7 @@ import json
 import math
 import numpy  as np
 import pandas as pd
-from sklearn.svm import SVC¶
+from sklearn.svm import SVC
 from sklearn.ensemble   import RandomForestClassifier
 from sklearn.metrics    import f1_score
 
@@ -38,7 +38,7 @@ X_test = X.ix[test_ind,:]
 Y_test = Y.ix[test_ind,:]
 
 # Train multi-label classifier
-classifier = OneVsRestClassifier(RandomForestClassifier(n_estimators = 10))
+classifier = OneVsRestClassifier(SVC(C=1))
 classifier.fit(X_training, Y_training)
 
 # Predict multi labels
