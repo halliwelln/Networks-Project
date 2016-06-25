@@ -13,6 +13,16 @@ from sklearn.ensemble   import RandomForestClassifier
 from sklearn.metrics    import f1_score
 
 # ----------------------------------------------------------------
+# Functions
+# ----------------------------------------------------------------
+
+def rep(item, n ):
+    new = []
+    for i in range(n):
+        new.append(item)
+    return new  
+
+# ----------------------------------------------------------------
 # Load Data
 # ----------------------------------------------------------------
 
@@ -26,16 +36,16 @@ Y = pd.read_csv('labels.csv',header=None)
 # ----------------------------------------------------------------
 
 # Init storage
-rolling_micro = []
-rolling_macro = []
-size_training = []
-size_test = []
-
+rolling_micro  = []
+rolling_macro  = []
+size_training  = []
+size_test      = []
+step_wise_size = range(50,500,50)
 # Run rolling model
-for i in range(11,13):
+for j,i in enumerate(rep(10,9)):
 
 	print '# ------------------------'
-	print 'Started iteration ' + str(i)
+	print 'Started iteration ' + str(j)
 	print '# ------------------------'
 
 	N    = X.shape[0]
@@ -43,7 +53,7 @@ for i in range(11,13):
 	size = i/float(100)
 	
 	training_ind = ind[:int(math.ceil(size*N))]
-	test_ind     = ind[int(math.ceil(size*N)):int(math.ceil(size*N))+int(math.ceil(len(training_ind) ))]
+	test_ind     = ind[int(math.ceil(size*N)):int(math.ceil(size*N))+step_wise_size[j]]
 
 	size_training.append(len(training_ind))
 	size_test.append(len(test_ind))
@@ -66,7 +76,7 @@ for i in range(11,13):
 	macro = f1_score(Y_test,predictions,average='macro')
 
 	print '# ------------------------'
-	print 'Finished iteration ' + str(i)
+	print 'Finished iteration ' + str(j)
 	print '# ------------------------'
 	print 'Results:' 
 	print 'Micro: ' + str(micro)
