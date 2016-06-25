@@ -32,7 +32,7 @@ size_training = []
 size_test = []
 
 # Run rolling model
-for i in range(1,11):
+for i in range(11,13):
 
 	print '# ------------------------'
 	print 'Started iteration ' + str(i)
@@ -43,7 +43,7 @@ for i in range(1,11):
 	size = i/float(100)
 	
 	training_ind = ind[:int(math.ceil(size*N))]
-	test_ind     = ind[int(math.ceil(size*N)):int(math.ceil(size*N))+int(math.ceil(len(training_ind) * 0.25))]
+	test_ind     = ind[int(math.ceil(size*N)):int(math.ceil(size*N))+int(math.ceil(len(training_ind) ))]
 
 	size_training.append(len(training_ind))
 	size_test.append(len(test_ind))
