@@ -10,6 +10,7 @@ import numpy  as np
 import pandas as pd
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.ensemble   import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.metrics    import f1_score
 
 # ----------------------------------------------------------------
@@ -26,10 +27,14 @@ def rep(item, n ):
 # Load Data
 # ----------------------------------------------------------------
 
-os.chdir('/Users/felix/Documents/GSE/Term 3/14D009 Social and Economic Networks/Project Data/')
+#os.chdir('/Users/felix/Documents/GSE/Term 3/14D009 Social and Economic Networks/Project Data/')
+os.chdir('/Users/Nick/Desktop')
 
-X = pd.read_csv('mod_matrix.csv',header=None)
-Y = pd.read_csv('labels.csv',header=None)
+comm = pd.read_csv("new_communities.csv", header=None)
+mod = pd.read_csv('mod_matrix_new.csv',header=None)
+
+X = pd.concat([mod, comm], axis=1)
+Y = pd.read_csv('new_labels.csv',header=None)
 
 # ----------------------------------------------------------------
 # Run models
@@ -41,8 +46,8 @@ rolling_macro  = []
 size_training  = []
 size_test      = []
 step_wise_size = range(50,500,50)
-# Run rolling model
-for j,i in enumerate(rep(10,9)):
+# Run rolling model 20,5
+for j,i in enumerate(rep(75,5)):
 
 	print '# ------------------------'
 	print 'Started iteration ' + str(j)
@@ -53,7 +58,7 @@ for j,i in enumerate(rep(10,9)):
 	size = i/float(100)
 	
 	training_ind = ind[:int(math.ceil(size*N))]
-	test_ind     = ind[int(math.ceil(size*N)):int(math.ceil(size*N))+step_wise_size[j]]
+	test_ind     = ind[int(math.ceil(size*N)):]#int(math.ceil(size*N))+step_wise_size[j]]
 
 	size_training.append(len(training_ind))
 	size_test.append(len(test_ind))
@@ -65,7 +70,7 @@ for j,i in enumerate(rep(10,9)):
 	Y_test = Y.ix[test_ind,:]
 
 	# Train multi-label classifier
-	classifier = OneVsRestClassifier(RandomForestClassifier(n_estimators = 50))
+	classifier = OneVsRestClassifier(RandomForestClassifier(n_estimators=100))
 	classifier.fit(X_training, Y_training)
 
 	# Predict multi labels
